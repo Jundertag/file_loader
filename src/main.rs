@@ -11,7 +11,7 @@ fn main() {
 
     match io::stdin().read_line(&mut buffer) {
         Ok(bytes_read) => {
-            println!("read {bytes_read} bytes")
+            println!("read {bytes_read} bytes from user input")
         }
         Err(error) => {
             println!("failed to read line from console");
