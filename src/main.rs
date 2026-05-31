@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::{fs, io};
+use std::env::current_dir;
 use std::io::{BufReader, Read};
 use std::io::ErrorKind;
 use std::path::Path;
@@ -7,25 +8,10 @@ use std::path::Path;
 fn main() {
     let mut buffer = String::with_capacity(4096);
 
-    println!("please type the directory to the file to load into heap memory (e.g., \"C:\\Users\\<user>\\Documents\\file.txt\")");
-
-    match io::stdin().read_line(&mut buffer) {
-        Ok(bytes_read) => {
-            println!("read {bytes_read} bytes from user input")
-        }
-        Err(error) => {
-            println!("failed to read line from console");
-            match error.kind() {
-                ErrorKind::InvalidData => {
-                    
-                }
-
-                _ => {
-                    println!("Unknown error: {:?}", error);
-                }
-            }
-        }
-    }
+    input(
+        &mut buffer,
+        format!("Path to the file to load into memory (either absolute or reference to {})", current_dir().unwrap().display()).as_str()
+    );
 
     let chosen_directory = buffer.trim();
 
@@ -67,4 +53,25 @@ fn main() {
     let mut s = String::new();
 
     io::stdin().read_line(&mut s).unwrap();
+}
+
+fn input(buf: &mut String, message: &str) {
+    print!("{}", message);
+    match io::stdin().read_line(buf) {
+        Ok(bytes_read) => {
+            println!("read {bytes_read} bytes from user input")
+        }
+        Err(error) => {
+            println!("failed to read line from console");
+            match error.kind() {
+                ErrorKind::InvalidData => {
+
+                }
+
+                _ => {
+                    println!("Unknown error: {:?}", error);
+                }
+            }
+        }
+    }
 }
